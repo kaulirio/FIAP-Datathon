@@ -30,33 +30,33 @@ with open('vagas.json', 'r') as vagas_file:
 
 
 
-# # Convert the JSON so that each prospect candidate is represented as a separate row in the DataFrame
-# # -----------------------
-# #prospects.JSON file
-# # -----------------------
-# records = []
+# Convert the JSON so that each prospect candidate is represented as a separate row in the DataFrame
+# -----------------------
+#prospects.JSON file
+# -----------------------
+records = []
 
-# for prof_id, profile_info in data_Prospects.items():
-#     titulo = profile_info.get("titulo")
-#     modalidade = profile_info.get("modalidade")
+for prof_id, profile_info in data_Prospects.items():
+    titulo = profile_info.get("titulo")
+    modalidade = profile_info.get("modalidade")
 
-#     for prospect in profile_info.get("prospects", []):
-#         record = {
-#             "id_prospect": prof_id,
-#             "titulo": titulo,
-#             "modalidade": modalidade,
-#             "nome_candidato": prospect.get("nome"),
-#             "codigo_candidato": prospect.get("codigo"),
-#             "situacao_candidado": prospect.get("situacao_candidado"),
-#             "data_candidatura": prospect.get("data_candidatura"),
-#             "ultima_atualizacao": prospect.get("ultima_atualizacao"),
-#             "comentario": prospect.get("comentario"),
-#             "recrutador": prospect.get("recrutador")
-#         }
-#         records.append(record)
+    for prospect in profile_info.get("prospects", []):
+        record = {
+            "id_prospect": prof_id,
+            "titulo": titulo,
+            "modalidade": modalidade,
+            "nome_candidato": prospect.get("nome"),
+            "codigo_candidato": prospect.get("codigo"),
+            "situacao_candidado": prospect.get("situacao_candidado"),
+            "data_candidatura": prospect.get("data_candidatura"),
+            "ultima_atualizacao": prospect.get("ultima_atualizacao"),
+            "comentario": prospect.get("comentario"),
+            "recrutador": prospect.get("recrutador")
+        }
+        records.append(record)
 
-# # Convert to DataFrame
-# df_Prospects = pd.DataFrame(records)
+# Convert to DataFrame
+df_Prospects = pd.DataFrame(records)
 
 
 # # -----------------------
