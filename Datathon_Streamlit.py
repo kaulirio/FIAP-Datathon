@@ -132,19 +132,20 @@ st.subheader("Selecione uma vaga para visualizar os candidatos mais compatíveis
 # -----------------------------
 st.sidebar.header("Selecione a vaga desejada")
 
-# Exemplo de seleção de vaga
-lista_vagas = ["Analista de Dados", "Engenheiro de Software", "Cientista de Dados"]
-#lista_mths
-
+# Exemplo de seleção de vaga - Lista de vagas
+lista_vagas = df_Vagas['informacoes_basicas__titulo_vaga']
 vaga_selecionada = st.sidebar.selectbox("Mês.Ano:", lista_vagas)
 
 #Lista de meses existentes na base de vagas
 # Criar nova coluna no formato 'MMM.yyyy'
 df_Vagas['mes_ano'] = df_Vagas['informacoes_basicas__data_requicisao'].dt.strftime('%b.%Y')
 
-# Gerar lista única ordenada
-lista_meses = sorted(df_Vagas['mes_ano'].unique().tolist())
-mth_selecionado = st.sidebar.selectbox("Título da vaga:", lista_meses)
+# Converter para datetime temporariamente (formato: %b.%Y → 'Apr.2019')
+lista_meses_ordenada = sorted(
+    df_Vagas['mes_ano'].dropna().unique(),
+    key=lambda x: pd.to_datetime(x, format='%b.%Y')
+)
+mth_selecionado = st.sidebar.selectbox("Título da vaga:", lista_meses_ordenada)
 
 
 # st.set_page_config(
