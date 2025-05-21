@@ -104,6 +104,20 @@ for prof_id, profile_info in data_Vagas.items():
 # Convert to DataFrame
 df_Vagas = pd.DataFrame(records)
 
+# Count NaN or empty values per column
+empty_counts = (df_Vagas.isnull() | (df_Vagas == '')).sum()
+
+# Identify columns with more than 13.000 missing/empty values
+cols_to_drop = empty_counts[empty_counts > 13000].index
+
+# Drop them from the DataFrame
+df_Vagas.drop(columns=cols_to_drop, inplace=True)
+
+# Convert date fields to datetime
+df_Vagas['informacoes_basicas__data_requicisao'] = pd.to_datetime(df_Vagas['informacoes_basicas__data_requicisao'], format='%d-%m-%Y', errors='coerce' )
+df_Vagas['informacoes_basicas__data_inicial'] = pd.to_datetime(df_Vagas['informacoes_basicas__data_inicial'], format='%d-%m-%Y', errors='coerce' )
+df_Vagas['informacoes_basicas__data_final'] = pd.to_datetime(df_Vagas['informacoes_basicas__data_final'], format='%d-%m-%Y', errors='coerce' )
+
 #Montando a estrutura do dashboard
 # -----------------------------
 # Título e introdução
@@ -125,9 +139,6 @@ lista_vagas = ["Analista de Dados", "Engenheiro de Software", "Cientista de Dado
 vaga_selecionada = st.sidebar.selectbox("Mês.Ano:", lista_vagas)
 
 #Lista de meses existentes na base de vagas
-# Certifique-se de que a coluna está em formato datetime
-df_Vagas['informacoes_basicas__data_requicisao'] = pd.to_datetime(df_Vagas['informacoes_basicas__data_requicisao'])
-
 # Criar nova coluna no formato 'MMM.yyyy'
 df_Vagas['mes_ano'] = df_Vagas['informacoes_basicas__data_requicisao'].dt.strftime('%b.%Y')
 
