@@ -1,8 +1,22 @@
-#Import libraries
-import pandas as pd
-import json
-import gdown #Use gdown to Access the File
 import streamlit as st
+
+st.set_page_config(
+    page_title = 'PAINEL DE AÇÕES DA B3',
+    layout = 'wide'
+)
+
+st.header("**PAINEL DE PREÇO DE FECHAMENTO E DIVIDENDOS DE AÇÕES DA B3**")
+
+
+
+
+
+#Import libraries
+# import streamlit as st
+# import pandas as pd
+# import json
+# import gdown #Use gdown to Access the File
+
 
 
 # #Imports JSON files from my personal Google Drive (files made public)
