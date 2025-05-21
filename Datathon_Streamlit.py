@@ -133,7 +133,7 @@ st.subheader("Selecione uma vaga para visualizar os candidatos mais compatíveis
 st.sidebar.header("Selecione a vaga desejada")
 
 # Exemplo de seleção de vaga - Lista de vagas
-lista_vagas = df_Vagas['informacoes_basicas__titulo_vaga']
+lista_vagas = sorted(df_Vagas['informacoes_basicas__titulo_vaga'])
 vaga_selecionada = st.sidebar.selectbox("Mês.Ano:", lista_vagas)
 
 #Lista de meses existentes na base de vagas
