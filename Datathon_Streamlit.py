@@ -121,7 +121,10 @@ st.sidebar.header("Filtros")
 
 # Exemplo de seleção de vaga
 lista_vagas = ["Analista de Dados", "Engenheiro de Software", "Cientista de Dados"]
-vaga_selecionada = st.sidebar.selectbox("Selecione a vaga:", lista_vagas)
+#lista_mths
+
+vaga_selecionada = st.sidebar.selectbox("Selecione o Mês.Ano:", lista_vagas)
+mth_selecionado = st.sidebar.selectbox("Selecione o título da vaga:", lista_vagas)
 
 
 # st.set_page_config(
