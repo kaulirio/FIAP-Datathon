@@ -147,7 +147,21 @@ mth_selecionado = st.sidebar.selectbox("Título da vaga:", lista_meses_ordenada)
 lista_vagas = sorted(df_Vagas['informacoes_basicas__titulo_vaga'])
 vaga_selecionada = st.sidebar.selectbox("Mês.Ano:", lista_vagas)
 
+#Ações quando o um valor no filtro for selecionado
+# Filtrar o dataframe pelo mês selecionado
+df_filtrado = df_Vagas[df_Vagas['mes_ano'] == mth_selecionado]
 
+# Gerar lista de vagas com base no mês selecionado
+lista_vagas = sorted(df_filtrado['informacoes_basicas__titulo_vaga'].dropna().unique())
+
+# Selecionar a vaga
+vaga_selecionada = st.sidebar.selectbox("Título da vaga:", lista_vagas)
+
+# -----------------------------
+# Exibição dos candidatos compatíveis
+# -----------------------------
+st.markdown(f"### Candidatos compatíveis com a vaga: {vaga_selecionada}")
+st.dataframe(df_Vagas, use_container_width=True)
 
 
 # st.set_page_config(
