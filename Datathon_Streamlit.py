@@ -4,105 +4,105 @@ import pandas as pd
 import json
 import gdown #Use gdown to Access the File
 
-#Imports JSON files from my personal Google Drive (files made public)
-# Replace with your own FILE_ID
-file_Prospects  = '1sh88eHjyIp0wXtcRIFozgN064VGOOxEs'
-file_Applicants = '17859ae_Ki5CImI9-1lhJ335GMDW0f2Qr'
-file_Vagas      = '1YKM7yDTzjHJVf82l2RxEx-SuLxFxCxrl'
+# #Imports JSON files from my personal Google Drive (files made public)
+# # Replace with your own FILE_ID
+# file_Prospects  = '1sh88eHjyIp0wXtcRIFozgN064VGOOxEs'
+# file_Applicants = '17859ae_Ki5CImI9-1lhJ335GMDW0f2Qr'
+# file_Vagas      = '1YKM7yDTzjHJVf82l2RxEx-SuLxFxCxrl'
 
-# Download the JSON files
-gdown.download(f'https://drive.google.com/uc?export=download&id={file_Prospects}', 'prospects.json', quiet=False)
-gdown.download(f'https://drive.google.com/uc?export=download&id={file_Applicants}', 'applicants.json', quiet=False)
-gdown.download(f'https://drive.google.com/uc?export=download&id={file_Vagas}', 'vagas.json', quiet=False)
+# # Download the JSON files
+# gdown.download(f'https://drive.google.com/uc?export=download&id={file_Prospects}', 'prospects.json', quiet=False)
+# gdown.download(f'https://drive.google.com/uc?export=download&id={file_Applicants}', 'applicants.json', quiet=False)
+# gdown.download(f'https://drive.google.com/uc?export=download&id={file_Vagas}', 'vagas.json', quiet=False)
 
-#Load the JSON File into Python
-with open('prospects.json', 'r') as prospects_file:
-    data_Prospects = json.load(prospects_file)
+# #Load the JSON File into Python
+# with open('prospects.json', 'r') as prospects_file:
+#     data_Prospects = json.load(prospects_file)
 
-with open('applicants.json', 'r') as applicants_file:
-    data_Applicants = json.load(applicants_file)
+# with open('applicants.json', 'r') as applicants_file:
+#     data_Applicants = json.load(applicants_file)
 
-with open('vagas.json', 'r') as vagas_file:
-    data_Vagas = json.load(vagas_file)
-
-
-
-# Convert the JSON so that each prospect candidate is represented as a separate row in the DataFrame
-# -----------------------
-#prospects.JSON file
-# -----------------------
-records = []
-
-for prof_id, profile_info in data_Prospects.items():
-    titulo = profile_info.get("titulo")
-    modalidade = profile_info.get("modalidade")
-
-    for prospect in profile_info.get("prospects", []):
-        record = {
-            "id_prospect": prof_id,
-            "titulo": titulo,
-            "modalidade": modalidade,
-            "nome_candidato": prospect.get("nome"),
-            "codigo_candidato": prospect.get("codigo"),
-            "situacao_candidado": prospect.get("situacao_candidado"),
-            "data_candidatura": prospect.get("data_candidatura"),
-            "ultima_atualizacao": prospect.get("ultima_atualizacao"),
-            "comentario": prospect.get("comentario"),
-            "recrutador": prospect.get("recrutador")
-        }
-        records.append(record)
-
-# Convert to DataFrame
-df_Prospects = pd.DataFrame(records)
+# with open('vagas.json', 'r') as vagas_file:
+#     data_Vagas = json.load(vagas_file)
 
 
-# -----------------------
-#applicants.JSON file
-# -----------------------
-records = []
 
-for prof_id, profile_info in data_Applicants.items():
-    record = {
-        "id_applicant": prof_id
-    }
+# # Convert the JSON so that each prospect candidate is represented as a separate row in the DataFrame
+# # -----------------------
+# #prospects.JSON file
+# # -----------------------
+# records = []
 
-    # Flatten sections
-    for section_name, section_data in profile_info.items():
-        if isinstance(section_data, dict):
-            for key, value in section_data.items():
-                record[f"{section_name}__{key}"] = value
-        else:
-            # Just in case any sections are not dicts (e.g., cv_pt or cv_en directly under profile)
-            record[section_name] = section_data
+# for prof_id, profile_info in data_Prospects.items():
+#     titulo = profile_info.get("titulo")
+#     modalidade = profile_info.get("modalidade")
 
-    records.append(record)
+#     for prospect in profile_info.get("prospects", []):
+#         record = {
+#             "id_prospect": prof_id,
+#             "titulo": titulo,
+#             "modalidade": modalidade,
+#             "nome_candidato": prospect.get("nome"),
+#             "codigo_candidato": prospect.get("codigo"),
+#             "situacao_candidado": prospect.get("situacao_candidado"),
+#             "data_candidatura": prospect.get("data_candidatura"),
+#             "ultima_atualizacao": prospect.get("ultima_atualizacao"),
+#             "comentario": prospect.get("comentario"),
+#             "recrutador": prospect.get("recrutador")
+#         }
+#         records.append(record)
 
-# Convert to DataFrame
-df_Applicants = pd.DataFrame(records)
+# # Convert to DataFrame
+# df_Prospects = pd.DataFrame(records)
 
 
-# -----------------------
-#vagas.JSON file
-# -----------------------
-records = []
+# # -----------------------
+# #applicants.JSON file
+# # -----------------------
+# records = []
 
-for prof_id, profile_info in data_Vagas.items():
-    record = {
-        "id_vaga": prof_id
-    }
+# for prof_id, profile_info in data_Applicants.items():
+#     record = {
+#         "id_applicant": prof_id
+#     }
 
-    # Flatten sections
-    for section_name, section_data in profile_info.items():
-        if isinstance(section_data, dict):
-            for key, value in section_data.items():
-                record[f"{section_name}__{key}"] = value
-        else:
-            record[section_name] = section_data
+#     # Flatten sections
+#     for section_name, section_data in profile_info.items():
+#         if isinstance(section_data, dict):
+#             for key, value in section_data.items():
+#                 record[f"{section_name}__{key}"] = value
+#         else:
+#             # Just in case any sections are not dicts (e.g., cv_pt or cv_en directly under profile)
+#             record[section_name] = section_data
 
-    records.append(record)
+#     records.append(record)
 
-# Convert to DataFrame
-df_Vagas = pd.DataFrame(records)
+# # Convert to DataFrame
+# df_Applicants = pd.DataFrame(records)
+
+
+# # -----------------------
+# #vagas.JSON file
+# # -----------------------
+# records = []
+
+# for prof_id, profile_info in data_Vagas.items():
+#     record = {
+#         "id_vaga": prof_id
+#     }
+
+#     # Flatten sections
+#     for section_name, section_data in profile_info.items():
+#         if isinstance(section_data, dict):
+#             for key, value in section_data.items():
+#                 record[f"{section_name}__{key}"] = value
+#         else:
+#             record[section_name] = section_data
+
+#     records.append(record)
+
+# # Convert to DataFrame
+# df_Vagas = pd.DataFrame(records)
 
 
 #Montando a estrutura do dashboard
@@ -111,8 +111,17 @@ df_Vagas = pd.DataFrame(records)
 # -----------------------------
 st.set_page_config(page_title="Sistema de Recomendação de Talentos por Vaga", layout="wide")
 
+st.title("Dashboard de Matching entre Vagas e Candidatos")
+st.subheader("Selecione uma vaga para visualizar os candidatos mais compatíveis")
 
+# -----------------------------
+# Sidebar - Filtros e seleção
+# -----------------------------
+st.sidebar.header("Filtros")
 
+# Exemplo de seleção de vaga
+lista_vagas = ["Analista de Dados", "Engenheiro de Software", "Cientista de Dados"]
+vaga_selecionada = st.sidebar.selectbox("Selecione a vaga:", lista_vagas)
 
 
 # st.set_page_config(
