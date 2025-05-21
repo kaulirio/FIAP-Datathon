@@ -8,12 +8,12 @@ import gdown #Use gdown to Access the File
 # # Replace with your own FILE_ID
 # file_Prospects  = '1sh88eHjyIp0wXtcRIFozgN064VGOOxEs'
 # file_Applicants = '17859ae_Ki5CImI9-1lhJ335GMDW0f2Qr'
-# file_Vagas      = '1YKM7yDTzjHJVf82l2RxEx-SuLxFxCxrl'
+file_Vagas      = '1YKM7yDTzjHJVf82l2RxEx-SuLxFxCxrl'
 
 # # Download the JSON files
 # gdown.download(f'https://drive.google.com/uc?export=download&id={file_Prospects}', 'prospects.json', quiet=False)
 # gdown.download(f'https://drive.google.com/uc?export=download&id={file_Applicants}', 'applicants.json', quiet=False)
-# gdown.download(f'https://drive.google.com/uc?export=download&id={file_Vagas}', 'vagas.json', quiet=False)
+gdown.download(f'https://drive.google.com/uc?export=download&id={file_Vagas}', 'vagas.json', quiet=False)
 
 # #Load the JSON File into Python
 # with open('prospects.json', 'r') as prospects_file:
@@ -22,8 +22,8 @@ import gdown #Use gdown to Access the File
 # with open('applicants.json', 'r') as applicants_file:
 #     data_Applicants = json.load(applicants_file)
 
-# with open('vagas.json', 'r') as vagas_file:
-#     data_Vagas = json.load(vagas_file)
+with open('vagas.json', 'r') as vagas_file:
+    data_Vagas = json.load(vagas_file)
 
 
 
@@ -81,29 +81,28 @@ import gdown #Use gdown to Access the File
 # df_Applicants = pd.DataFrame(records)
 
 
-# # -----------------------
-# #vagas.JSON file
-# # -----------------------
-# records = []
+# -----------------------
+#vagas.JSON file
+# -----------------------
+records = []
 
-# for prof_id, profile_info in data_Vagas.items():
-#     record = {
-#         "id_vaga": prof_id
-#     }
+for prof_id, profile_info in data_Vagas.items():
+    record = {
+        "id_vaga": prof_id
+    }
 
-#     # Flatten sections
-#     for section_name, section_data in profile_info.items():
-#         if isinstance(section_data, dict):
-#             for key, value in section_data.items():
-#                 record[f"{section_name}__{key}"] = value
-#         else:
-#             record[section_name] = section_data
+    # Flatten sections
+    for section_name, section_data in profile_info.items():
+        if isinstance(section_data, dict):
+            for key, value in section_data.items():
+                record[f"{section_name}__{key}"] = value
+        else:
+            record[section_name] = section_data
 
-#     records.append(record)
+    records.append(record)
 
-# # Convert to DataFrame
-# df_Vagas = pd.DataFrame(records)
-
+# Convert to DataFrame
+df_Vagas = pd.DataFrame(records)
 
 #Montando a estrutura do dashboard
 # -----------------------------
@@ -123,8 +122,15 @@ st.sidebar.header("Selecione a vaga desejada")
 lista_vagas = ["Analista de Dados", "Engenheiro de Software", "Cientista de Dados"]
 #lista_mths
 
-vaga_selecionada = st.sidebar.selectbox("Mês/Ano:", lista_vagas)
-mth_selecionado = st.sidebar.selectbox("Título da vaga:", lista_vagas)
+vaga_selecionada = st.sidebar.selectbox("Mês.Ano:", lista_vagas)
+
+#Lista de meses existentes na base de vagas
+# Criar nova coluna no formato 'MMM.yyyy'
+df_Vagas['mes_ano'] = df_Vagas['informacoes_basicas__data_requicisao'].dt.strftime('%b.%Y')
+
+# Gerar lista única ordenada
+lista_meses = sorted(df_Vagas['mes_ano'].unique().tolist())
+mth_selecionado = st.sidebar.selectbox("Título da vaga:", lista_meses)
 
 
 # st.set_page_config(
