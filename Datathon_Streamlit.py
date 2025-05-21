@@ -1,14 +1,10 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
 
-st.set_page_config(
-    page_title = 'PAINEL DE AÇÕES DA B3',
-    layout = 'wide'
-)
+st.title('Uber pickups in NYC')
 
-st.header("**PAINEL DE PREÇO DE FECHAMENTO E DIVIDENDOS DE AÇÕES DA B3**")
-
-
-
+streamlit run Datathon_Streamlit.py
 
 
 #Import libraries
