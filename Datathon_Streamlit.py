@@ -59,56 +59,56 @@ for prof_id, profile_info in data_Prospects.items():
 df_Prospects = pd.DataFrame(records)
 
 
-# # -----------------------
-# #applicants.JSON file
-# # -----------------------
-# records = []
+# -----------------------
+#applicants.JSON file
+# -----------------------
+records = []
 
-# for prof_id, profile_info in data_Applicants.items():
-#     record = {
-#         "id_applicant": prof_id
-#     }
+for prof_id, profile_info in data_Applicants.items():
+    record = {
+        "id_applicant": prof_id
+    }
 
-#     # Flatten sections
-#     for section_name, section_data in profile_info.items():
-#         if isinstance(section_data, dict):
-#             for key, value in section_data.items():
-#                 record[f"{section_name}__{key}"] = value
-#         else:
-#             # Just in case any sections are not dicts (e.g., cv_pt or cv_en directly under profile)
-#             record[section_name] = section_data
+    # Flatten sections
+    for section_name, section_data in profile_info.items():
+        if isinstance(section_data, dict):
+            for key, value in section_data.items():
+                record[f"{section_name}__{key}"] = value
+        else:
+            # Just in case any sections are not dicts (e.g., cv_pt or cv_en directly under profile)
+            record[section_name] = section_data
 
-#     records.append(record)
+    records.append(record)
 
-# # Convert to DataFrame
-# df_Applicants = pd.DataFrame(records)
+# Convert to DataFrame
+df_Applicants = pd.DataFrame(records)
 
 
-# # -----------------------
-# #vagas.JSON file
-# # -----------------------
-# records = []
+# -----------------------
+#vagas.JSON file
+# -----------------------
+records = []
 
-# for prof_id, profile_info in data_Vagas.items():
-#     record = {
-#         "id_vaga": prof_id
-#     }
+for prof_id, profile_info in data_Vagas.items():
+    record = {
+        "id_vaga": prof_id
+    }
 
-#     # Flatten sections
-#     for section_name, section_data in profile_info.items():
-#         if isinstance(section_data, dict):
-#             for key, value in section_data.items():
-#                 record[f"{section_name}__{key}"] = value
-#         else:
-#             record[section_name] = section_data
+    # Flatten sections
+    for section_name, section_data in profile_info.items():
+        if isinstance(section_data, dict):
+            for key, value in section_data.items():
+                record[f"{section_name}__{key}"] = value
+        else:
+            record[section_name] = section_data
 
-#     records.append(record)
+    records.append(record)
 
-# # Convert to DataFrame
-# df_Vagas = pd.DataFrame(records)
+# Convert to DataFrame
+df_Vagas = pd.DataFrame(records)
 
-# # Show the DataFrame
-# df_Prospects.head()
+# Show the DataFrame
+df_Prospects.head()
 
 
 
@@ -124,22 +124,22 @@ df_Prospects = pd.DataFrame(records)
 # st.markdown("**PAINEL DE PREÇO DE FECHAMENTO E DIVIDENDfffOS DE AÇÕES DA B3**")
 
 
-# # ticker = st.text_input('Digite o ticket da ação', 'BBAS3')
-# # empresa = yf.Ticker(f"{ticker}.SA")
+# ticker = st.text_input('Digite o ticket da ação', 'BBAS3')
+# empresa = yf.Ticker(f"{ticker}.SA")
 
-# # tickerDF = empresa.history( period  = "1d",
-# #                             start   = "2019-01-01",
-# #                             end     = "2025-01-20"
-# # )
+# tickerDF = empresa.history( period  = "1d",
+#                             start   = "2019-01-01",
+#                             end     = "2025-01-20"
+# )
 
-# # col1, col2, col3 = st.columns([1, 1, 1])
+# col1, col2, col3 = st.columns([1, 1, 1])
 
-# # with col1:
-# #     st.write(f"**Empresa:**  {empresa.info['longName']}")
-# # with col2:
-# #     st.write(f"**Mercado:** R$ {empresa.info['industry']}")
-# # with col3:
-# #     st.write(f"**Preço Atual:** R$ {empresa.info['currentPrice']}")
+# with col1:
+#     st.write(f"**Empresa:**  {empresa.info['longName']}")
+# with col2:
+#     st.write(f"**Mercado:** R$ {empresa.info['industry']}")
+# with col3:
+#     st.write(f"**Preço Atual:** R$ {empresa.info['currentPrice']}")
 
-# # st.line_chart(tickerDF.Close)
-# # st.bar_chart(tickerDF.Dividends)
+# st.line_chart(tickerDF.Close)
+# st.bar_chart(tickerDF.Dividends)
