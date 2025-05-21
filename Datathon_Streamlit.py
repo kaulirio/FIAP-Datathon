@@ -141,11 +141,11 @@ lista_meses_ordenada = sorted(
     df_Vagas['mes_ano'].dropna().unique(),
     key=lambda x: pd.to_datetime(x, format='%b.%Y')
 )
-mth_selecionado = st.sidebar.selectbox("Título da vaga:", lista_meses_ordenada)
+mth_selecionado = st.sidebar.selectbox("Mês.Ano:", lista_meses_ordenada)
 
 # Exemplo de seleção de vaga - Lista de vagas
-lista_vagas = sorted(df_Vagas['informacoes_basicas__titulo_vaga'])
-vaga_selecionada = st.sidebar.selectbox("Mês.Ano:", lista_vagas)
+#lista_vagas = sorted(df_Vagas['informacoes_basicas__titulo_vaga'])
+#vaga_selecionada = st.sidebar.selectbox("Mês.Ano:", lista_vagas)
 
 #Ações quando o um valor no filtro for selecionado
 # Filtrar o dataframe pelo mês selecionado
