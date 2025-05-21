@@ -4,9 +4,6 @@ import pandas as pd
 import json
 import gdown #Use gdown to Access the File
 
-
-st.title('Test - Datathon')
-
 #Imports JSON files from my personal Google Drive (files made public)
 # Replace with your own FILE_ID
 file_Prospects  = '1sh88eHjyIp0wXtcRIFozgN064VGOOxEs'
@@ -107,8 +104,9 @@ for prof_id, profile_info in data_Vagas.items():
 # Convert to DataFrame
 df_Vagas = pd.DataFrame(records)
 
-# Show the DataFrame
-df_Prospects.head()
+
+#Montando a estrutura do dashboard
+st.title('Sistema de Recomendação de Talentos por Vaga')
 
 
 
