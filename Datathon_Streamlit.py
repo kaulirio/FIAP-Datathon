@@ -7,26 +7,26 @@ import gdown #Use gdown to Access the File
 
 st.title('Test - Datathon')
 
-# #Imports JSON files from my personal Google Drive (files made public)
-# # Replace with your own FILE_ID
-# file_Prospects  = '1sh88eHjyIp0wXtcRIFozgN064VGOOxEs'
-# file_Applicants = '17859ae_Ki5CImI9-1lhJ335GMDW0f2Qr'
-# file_Vagas      = '1YKM7yDTzjHJVf82l2RxEx-SuLxFxCxrl'
+#Imports JSON files from my personal Google Drive (files made public)
+# Replace with your own FILE_ID
+file_Prospects  = '1sh88eHjyIp0wXtcRIFozgN064VGOOxEs'
+file_Applicants = '17859ae_Ki5CImI9-1lhJ335GMDW0f2Qr'
+file_Vagas      = '1YKM7yDTzjHJVf82l2RxEx-SuLxFxCxrl'
 
-# # Download the JSON files
-# gdown.download(f'https://drive.google.com/uc?export=download&id={file_Prospects}', 'prospects.json', quiet=False)
-# gdown.download(f'https://drive.google.com/uc?export=download&id={file_Applicants}', 'applicants.json', quiet=False)
-# gdown.download(f'https://drive.google.com/uc?export=download&id={file_Vagas}', 'vagas.json', quiet=False)
+# Download the JSON files
+gdown.download(f'https://drive.google.com/uc?export=download&id={file_Prospects}', 'prospects.json', quiet=False)
+gdown.download(f'https://drive.google.com/uc?export=download&id={file_Applicants}', 'applicants.json', quiet=False)
+gdown.download(f'https://drive.google.com/uc?export=download&id={file_Vagas}', 'vagas.json', quiet=False)
 
-# #Load the JSON File into Python
-# with open('prospects.json', 'r') as prospects_file:
-#     data_Prospects = json.load(prospects_file)
+#Load the JSON File into Python
+with open('prospects.json', 'r') as prospects_file:
+    data_Prospects = json.load(prospects_file)
 
-# with open('applicants.json', 'r') as applicants_file:
-#     data_Applicants = json.load(applicants_file)
+with open('applicants.json', 'r') as applicants_file:
+    data_Applicants = json.load(applicants_file)
 
-# with open('vagas.json', 'r') as vagas_file:
-#     data_Vagas = json.load(vagas_file)
+with open('vagas.json', 'r') as vagas_file:
+    data_Vagas = json.load(vagas_file)
 
 
 
