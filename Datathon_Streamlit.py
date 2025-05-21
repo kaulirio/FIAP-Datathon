@@ -117,14 +117,14 @@ st.subheader("Selecione uma vaga para visualizar os candidatos mais compatíveis
 # -----------------------------
 # Sidebar - Filtros e seleção
 # -----------------------------
-st.sidebar.header("Filtros")
+st.sidebar.header("Selecione a vaga desejada")
 
 # Exemplo de seleção de vaga
 lista_vagas = ["Analista de Dados", "Engenheiro de Software", "Cientista de Dados"]
 #lista_mths
 
-vaga_selecionada = st.sidebar.selectbox("Selecione o Mês.Ano:", lista_vagas)
-mth_selecionado = st.sidebar.selectbox("Selecione o título da vaga:", lista_vagas)
+vaga_selecionada = st.sidebar.selectbox("Mês/Ano:", lista_vagas)
+mth_selecionado = st.sidebar.selectbox("Título da vaga:", lista_vagas)
 
 
 # st.set_page_config(
