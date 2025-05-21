@@ -106,7 +106,10 @@ df_Vagas = pd.DataFrame(records)
 
 
 #Montando a estrutura do dashboard
-st.title('Sistema de Recomendação de Talentos por Vaga')
+# -----------------------------
+# Título e introdução
+# -----------------------------
+st.set_page_config(page_title="Sistema de Recomendação de Talentos por Vaga", layout="wide")
 
 
 
