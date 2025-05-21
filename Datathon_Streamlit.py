@@ -4,7 +4,7 @@ import numpy as np
 
 st.title('Uber pickups in NYC')
 
-streamlit run Datathon_Streamlit.py
+# streamlit run Datathon_Streamlit.py
 
 
 #Import libraries
