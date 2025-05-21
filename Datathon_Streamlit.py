@@ -1,19 +1,11 @@
+#Import libraries
 import streamlit as st
 import pandas as pd
-import numpy as np
-
-st.title('Uber pickups in NYC')
-
-# streamlit run Datathon_Streamlit.py
+import json
+import gdown #Use gdown to Access the File
 
 
-#Import libraries
-# import streamlit as st
-# import pandas as pd
-# import json
-# import gdown #Use gdown to Access the File
-
-
+st.title('Test - Datathon')
 
 # #Imports JSON files from my personal Google Drive (files made public)
 # # Replace with your own FILE_ID
