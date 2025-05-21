@@ -155,4 +155,3 @@ st.header("**PAINEL DE PREÇO DE FECHAMENTO E DIVIDENDOS DE AÇÕES DA B3**")
 
 # # st.line_chart(tickerDF.Close)
 # # st.bar_chart(tickerDF.Dividends)
-
