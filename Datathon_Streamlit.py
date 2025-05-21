@@ -125,6 +125,9 @@ lista_vagas = ["Analista de Dados", "Engenheiro de Software", "Cientista de Dado
 vaga_selecionada = st.sidebar.selectbox("Mês.Ano:", lista_vagas)
 
 #Lista de meses existentes na base de vagas
+# Certifique-se de que a coluna está em formato datetime
+df_Vagas['informacoes_basicas__data_requicisao'] = pd.to_datetime(df_Vagas['informacoes_basicas__data_requicisao'])
+
 # Criar nova coluna no formato 'MMM.yyyy'
 df_Vagas['mes_ano'] = df_Vagas['informacoes_basicas__data_requicisao'].dt.strftime('%b.%Y')
 
