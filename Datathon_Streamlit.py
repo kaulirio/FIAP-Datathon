@@ -9,20 +9,20 @@ import unicodedata
 # #Imports JSON files from my personal Google Drive (files made public)
 # # Replace with your own FILE_ID
 # file_Prospects  = '1sh88eHjyIp0wXtcRIFozgN064VGOOxEs'
-# file_Applicants = '17859ae_Ki5CImI9-1lhJ335GMDW0f2Qr'
+file_Applicants = '17859ae_Ki5CImI9-1lhJ335GMDW0f2Qr'
 file_Vagas      = '1YKM7yDTzjHJVf82l2RxEx-SuLxFxCxrl'
 
 # # Download the JSON files
 # gdown.download(f'https://drive.google.com/uc?export=download&id={file_Prospects}', 'prospects.json', quiet=False)
-# gdown.download(f'https://drive.google.com/uc?export=download&id={file_Applicants}', 'applicants.json', quiet=False)
+gdown.download(f'https://drive.google.com/uc?export=download&id={file_Applicants}', 'applicants.json', quiet=False)
 gdown.download(f'https://drive.google.com/uc?export=download&id={file_Vagas}', 'vagas.json', quiet=False)
 
 # #Load the JSON File into Python
 # with open('prospects.json', 'r') as prospects_file:
 #     data_Prospects = json.load(prospects_file)
 
-# with open('applicants.json', 'r') as applicants_file:
-#     data_Applicants = json.load(applicants_file)
+with open('applicants.json', 'r') as applicants_file:
+    data_Applicants = json.load(applicants_file)
 
 with open('vagas.json', 'r') as vagas_file:
     data_Vagas = json.load(vagas_file)
@@ -58,29 +58,29 @@ with open('vagas.json', 'r') as vagas_file:
 # df_Prospects = pd.DataFrame(records)
 
 
-# # -----------------------
-# #applicants.JSON file
-# # -----------------------
-# records = []
+# -----------------------
+#applicants.JSON file
+# -----------------------
+records = []
 
-# for prof_id, profile_info in data_Applicants.items():
-#     record = {
-#         "id_applicant": prof_id
-#     }
+for prof_id, profile_info in data_Applicants.items():
+    record = {
+        "id_applicant": prof_id
+    }
 
-#     # Flatten sections
-#     for section_name, section_data in profile_info.items():
-#         if isinstance(section_data, dict):
-#             for key, value in section_data.items():
-#                 record[f"{section_name}__{key}"] = value
-#         else:
-#             # Just in case any sections are not dicts (e.g., cv_pt or cv_en directly under profile)
-#             record[section_name] = section_data
+    # Flatten sections
+    for section_name, section_data in profile_info.items():
+        if isinstance(section_data, dict):
+            for key, value in section_data.items():
+                record[f"{section_name}__{key}"] = value
+        else:
+            # Just in case any sections are not dicts (e.g., cv_pt or cv_en directly under profile)
+            record[section_name] = section_data
 
-#     records.append(record)
+    records.append(record)
 
-# # Convert to DataFrame
-# df_Applicants = pd.DataFrame(records)
+# Convert to DataFrame
+df_Applicants = pd.DataFrame(records)
 
 
 # -----------------------
@@ -178,6 +178,29 @@ def clean_text(text):
 df_Vagas['comparison_info'] = df_Vagas['perfil_vaga__competencia_tecnicas_e_comportamentais']
 #Clean special characters
 df_Vagas['comparison_info'] = df_Vagas['comparison_info'].apply(clean_text)
+
+# Example: compare first job in df_Vagas against all applicants
+job_description = df_Vagas['comparison_info'].iloc[0]
+
+# Combine the job description and all CVs into one list
+texts = [job_description] + df_Applicants['cv_pt'].fillna('').tolist()
+
+# Convert to TF-IDF vectors
+vectorizer = TfidfVectorizer(stop_words=None)
+tfidf_matrix = vectorizer.fit_transform(texts)
+
+# Compute cosine similarity between job and each CV
+similarities = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:]).flatten()
+
+# Add results to df_Applicants
+df_Applicants['match_score'] = similarities
+
+# Sort to get best-matching candidates
+top_matches = df_Applicants.sort_values(by='match_score', ascending=False)
+
+# Display top N
+print(top_matches[['cv_pt', 'match_score']].head(5))
+
 
 # -----------------------------
 # Exibição dos candidatos compatíveis
