@@ -5,6 +5,9 @@ import json
 import gdown #Use gdown to Access the File
 import re
 import unicodedata
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
 
 # #Imports JSON files from my personal Google Drive (files made public)
 # # Replace with your own FILE_ID
