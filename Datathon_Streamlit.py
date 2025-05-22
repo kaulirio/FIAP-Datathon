@@ -199,14 +199,14 @@ df_Applicants['match_score'] = similarities
 top_matches = df_Applicants.sort_values(by='match_score', ascending=False)
 
 # Display top N
-print(top_matches[['cv_pt', 'match_score']].head(5))
+# print(top_matches[['cv_pt', 'match_score']].head(5))
 
 
 # -----------------------------
 # Exibição dos candidatos compatíveis
 # -----------------------------
 st.markdown(f"### Candidatos compatíveis com a vaga: {vaga_selecionada}")
-st.dataframe(df_Vagas, use_container_width=True)
+st.dataframe(top_matches[['cv_pt', 'match_score']], use_container_width=True)
 
 
 # st.set_page_config(
