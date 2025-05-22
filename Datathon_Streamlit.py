@@ -3,6 +3,8 @@ import streamlit as st
 import pandas as pd
 import json
 import gdown #Use gdown to Access the File
+import re
+import unicodedata
 
 # #Imports JSON files from my personal Google Drive (files made public)
 # # Replace with your own FILE_ID
@@ -156,6 +158,26 @@ lista_vagas = sorted(df_filtrado['informacoes_basicas__titulo_vaga'].dropna().un
 
 # Selecionar a vaga
 vaga_selecionada = st.sidebar.selectbox("Título da vaga:", lista_vagas)
+
+
+# -----------------------------
+# Análise dos possívels matches da vaga de candidatos da base Applicants 
+# -----------------------------
+#Load and Preprocess Your CV Data
+
+# Basic text cleaning
+def clean_text(text):
+    text = re.sub(r'\n', ' ', text)  # Remove line breaks
+    text = re.sub(r'[^a-zA-Z0-9À-ÿ ]', '', text)  # Keep accented characters
+    text = text.lower()  # Lowercase
+    # Normalize accented characters to plain ASCII (e.g., é → e)
+    text = unicodedata.normalize('NFKD', text).encode('ASCII', 'ignore').decode('utf-8')
+
+    return text
+
+df_Vagas['comparison_info'] = df_Vagas['perfil_vaga__competencia_tecnicas_e_comportamentais']
+#Clean special characters
+df_Vagas['comparison_info'] = df_Vagas['comparison_info'].apply(clean_text)
 
 # -----------------------------
 # Exibição dos candidatos compatíveis
