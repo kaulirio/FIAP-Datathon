@@ -219,8 +219,9 @@ top_matches = df_Applicants.sort_values(by='match_score', ascending=False)
 # -----------------------------
 # Filtro por estado (local da vaga)
 # -----------------------------
-lista_estados = sorted(df_Vagas['estado'].dropna().unique())
-estado_selecionado = st.sidebar.selectbox("Filtrar por estado:", lista_estados)
+list_local = sorted(df_Applicants['local'].dropna().unique())
+candidato_local_selecionado = st.sidebar.selectbox("Filtrar por estado:", list_local)
+opcoes = st.multiselect(list_local)
 
 # Filtrar vagas pelo estado selecionado
 df_Vagas_filtrado = df_Vagas[df_Vagas['estado'] == estado_selecionado]
