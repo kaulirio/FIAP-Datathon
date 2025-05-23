@@ -10,11 +10,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 import gc
 
 
-df_Vagas = st.session_state.df_Vagas
-df_Applicants = st.session_state.df_Applicants
-
 # Check whether the JSON files have been loaded into the python application
-if 'df_Vagas' not in globals() and 'df_Applicants' not in globals():
+#if 'df_Vagas' not in globals() and 'df_Applicants' not in globals():
+if 'df_Vagas' not in st.session_state and 'df_Applicants' not in st.session_state:
     # #Imports JSON files from my personal Google Drive (files made public)
     # # Replace with your own FILE_ID
     # file_Prospects  = '1sh88eHjyIp0wXtcRIFozgN064VGOOxEs'
@@ -126,6 +124,9 @@ if 'df_Vagas' not in globals() and 'df_Applicants' not in globals():
     del data_Applicants
     # Force garbage collection
     gc.collect()
+else:
+    df_Vagas = st.session_state.df_Vagas
+    df_Applicants = st.session_state.df_Applicants
 
 
 # Count NaN or empty values per column
