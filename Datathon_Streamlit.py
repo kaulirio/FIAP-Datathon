@@ -8,7 +8,7 @@ import unicodedata
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import gc
-
+import os
 
 # Check whether the JSON files have been loaded into the python application
 #if 'df_Vagas' not in globals() and 'df_Applicants' not in globals():
@@ -33,7 +33,6 @@ if 'df_Vagas' not in st.session_state and 'df_Applicants' not in st.session_stat
 
     with open('vagas.json', 'r') as vagas_file:
         data_Vagas = json.load(vagas_file)
-
 
 
     # # Convert the JSON so that each prospect candidate is represented as a separate row in the DataFrame
@@ -87,8 +86,8 @@ if 'df_Vagas' not in st.session_state and 'df_Applicants' not in st.session_stat
         records.append(record)
 
     # Convert to DataFrame
-    df_Applicants = pd.DataFrame(records)
-    st.session_state.df_Applicants = df_Applicants
+    #df_Applicants = pd.DataFrame(records)
+    st.session_state.df_Applicants = pd.DataFrame(records)
 
     #test
 
@@ -113,9 +112,8 @@ if 'df_Vagas' not in st.session_state and 'df_Applicants' not in st.session_stat
         records.append(record)
 
     # Convert to DataFrame
-    df_Vagas = pd.DataFrame(records)
-    st.session_state.df_Vagas = df_Vagas
-
+    #df_Vagas = pd.DataFrame(records)
+    st.session_state.df_Vagas = pd.DataFrame(records)
 
 
     #Release memory used
@@ -124,10 +122,10 @@ if 'df_Vagas' not in st.session_state and 'df_Applicants' not in st.session_stat
     del data_Applicants
     # Force garbage collection
     gc.collect()
-else:
-    df_Vagas = st.session_state.df_Vagas
-    df_Applicants = st.session_state.df_Applicants
 
+    
+df_Vagas = st.session_state.df_Vagas
+df_Applicants = st.session_state.df_Applicants
 
 # Count NaN or empty values per column
 empty_counts = (df_Vagas.isnull() | (df_Vagas == '')).sum()
