@@ -9,6 +9,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import gc
 
+
+df_Vagas = st.session_state.df_Vagas
+df_Applicants = st.session_state.df_Applicants
+
 # Check whether the JSON files have been loaded into the python application
 if 'df_Vagas' not in globals() and 'df_Applicants' not in globals():
     # #Imports JSON files from my personal Google Drive (files made public)
@@ -86,6 +90,7 @@ if 'df_Vagas' not in globals() and 'df_Applicants' not in globals():
 
     # Convert to DataFrame
     df_Applicants = pd.DataFrame(records)
+    st.session_state.df_Applicants = df_Applicants
 
     #test
 
@@ -111,6 +116,8 @@ if 'df_Vagas' not in globals() and 'df_Applicants' not in globals():
 
     # Convert to DataFrame
     df_Vagas = pd.DataFrame(records)
+    st.session_state.df_Vagas = df_Vagas
+
 
 
     #Release memory used
