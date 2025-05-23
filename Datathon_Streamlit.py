@@ -141,7 +141,7 @@ df_Vagas['informacoes_basicas__data_final'] = pd.to_datetime(df_Vagas['informaco
 st.set_page_config(page_title="Sistema de Recomendação de Talentos por Vaga", layout="wide")
 
 st.title("Dashboard de Matching entre Vagas e Candidatos")
-st.subheader("Selecione uma vaga para visualizar os candidatos mais compatíveis")
+st.subheader("Selecione uma vaga na aba filtros para visualizar os candidatos mais compatíveis")
 
 # -----------------------------
 # Sidebar - Filtros e seleção
@@ -224,14 +224,14 @@ candidato_local_selecionado = st.sidebar.selectbox("Filtrar por estado:", list_l
 opcoes = st.multiselect(list_local)
 
 # Filtrar vagas pelo estado selecionado
-df_Vagas_filtrado = df_Vagas[df_Vagas['estado'] == estado_selecionado]
+top_matches_filtrado = top_matches[top_matches['local'] == candidato_local_selecionado]
 
 
 # -----------------------------
 # Exibição dos candidatos compatíveis
 # -----------------------------
 st.markdown(f"### Candidatos compatíveis com a vaga: {vaga_selecionada}")
-st.dataframe(top_matches[['cv_pt', 'match_score']], use_container_width=True)
+st.dataframe(top_matches_filtrado[['cv_pt', 'match_score']], use_container_width=True)
 
 
 # st.set_page_config(
