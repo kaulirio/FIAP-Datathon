@@ -150,13 +150,6 @@ st.set_page_config(page_title="Sistema de Recomendação de Talentos por Vaga", 
 st.title("Dashboard de Matching entre Vagas e Candidatos")
 st.subheader("Selecione uma vaga na aba filtros para visualizar os candidatos mais compatíveis")
 
-st.markdown("### DataFrames currently in `st.session_state`")
-
-for key, value in st.session_state.items():
-    if isinstance(value, pd.DataFrame):
-        st.markdown(f"#### `{key}`")
-        st.dataframe(value)
-
 # -----------------------------
 # Sidebar - Filtros e seleção
 # -----------------------------
@@ -245,6 +238,13 @@ top_matches_filtrado = top_matches[top_matches['local'] == candidato_local_selec
 # Exibição dos candidatos compatíveis
 # -----------------------------
 st.markdown(f"### Candidatos compatíveis com a vaga: {vaga_selecionada}")
+st.markdown("### DataFrames currently in `st.session_state`")
+
+for key, value in st.session_state.items():
+    if isinstance(value, pd.DataFrame):
+        st.markdown(f"#### `{key}`")
+        st.dataframe(value)
+
 st.dataframe(top_matches_filtrado[['cv_pt', 'match_score']], use_container_width=True)
 
 
