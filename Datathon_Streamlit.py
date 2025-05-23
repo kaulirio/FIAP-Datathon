@@ -7,6 +7,7 @@ import re
 import unicodedata
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import gc
 
 
 # #Imports JSON files from my personal Google Drive (files made public)
@@ -85,6 +86,7 @@ for prof_id, profile_info in data_Applicants.items():
 # Convert to DataFrame
 df_Applicants = pd.DataFrame(records)
 
+#test
 
 # -----------------------
 #vagas.JSON file
@@ -108,6 +110,15 @@ for prof_id, profile_info in data_Vagas.items():
 
 # Convert to DataFrame
 df_Vagas = pd.DataFrame(records)
+
+
+#Release memory used
+# Clear variables
+del data_Vagas
+del data_Applicants
+# Force garbage collection
+gc.collect()
+
 
 # Count NaN or empty values per column
 empty_counts = (df_Vagas.isnull() | (df_Vagas == '')).sum()
@@ -146,6 +157,7 @@ lista_meses_ordenada = sorted(
     df_Vagas['mes_ano'].dropna().unique(),
     key=lambda x: pd.to_datetime(x, format='%b.%Y')
 )
+# Mês.Ano Filtro lateral
 mth_selecionado = st.sidebar.selectbox("Mês.Ano:", lista_meses_ordenada)
 
 # Exemplo de seleção de vaga - Lista de vagas
@@ -159,7 +171,7 @@ df_filtrado = df_Vagas[df_Vagas['mes_ano'] == mth_selecionado]
 # Gerar lista de vagas com base no mês selecionado
 lista_vagas = sorted(df_filtrado['informacoes_basicas__titulo_vaga'].dropna().unique())
 
-# Selecionar a vaga
+# "Titulo da vaga" Filtro lateral
 vaga_selecionada = st.sidebar.selectbox("Título da vaga:", lista_vagas)
 
 
@@ -203,6 +215,15 @@ top_matches = df_Applicants.sort_values(by='match_score', ascending=False)
 
 # Display top N
 # print(top_matches[['cv_pt', 'match_score']].head(5))
+
+# -----------------------------
+# Filtro por estado (local da vaga)
+# -----------------------------
+lista_estados = sorted(df_Vagas['estado'].dropna().unique())
+estado_selecionado = st.sidebar.selectbox("Filtrar por estado:", lista_estados)
+
+# Filtrar vagas pelo estado selecionado
+df_Vagas_filtrado = df_Vagas[df_Vagas['estado'] == estado_selecionado]
 
 
 # -----------------------------
