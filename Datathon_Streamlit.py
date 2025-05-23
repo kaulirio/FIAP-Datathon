@@ -12,7 +12,7 @@ import os
 
 # Check whether the JSON files have been loaded into the python application
 #if 'df_Vagas' not in globals() and 'df_Applicants' not in globals():
-if 'df_Vagas' not in st.session_state and 'df_Applicants' not in st.session_state:
+if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state:
     # #Imports JSON files from my personal Google Drive (files made public)
     # # Replace with your own FILE_ID
     # file_Prospects  = '1sh88eHjyIp0wXtcRIFozgN064VGOOxEs'
@@ -149,6 +149,13 @@ st.set_page_config(page_title="Sistema de Recomendação de Talentos por Vaga", 
 
 st.title("Dashboard de Matching entre Vagas e Candidatos")
 st.subheader("Selecione uma vaga na aba filtros para visualizar os candidatos mais compatíveis")
+
+st.markdown("### DataFrames currently in `st.session_state`")
+
+for key, value in st.session_state.items():
+    if isinstance(value, pd.DataFrame):
+        st.markdown(f"#### `{key}`")
+        st.dataframe(value)
 
 # -----------------------------
 # Sidebar - Filtros e seleção
