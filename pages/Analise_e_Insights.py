@@ -20,6 +20,13 @@ import locale
 
 
 
+st.set_page_config(page_title="Análises e Insights Estratégicos", layout="wide")
+
+@st.cache_data(ttl=1800) # cache expires after 30 minutes 
+def load_json(json_file):    
+    df = json.load(json_file)
+    return df
+
 # Check whether the JSON files have been loaded into the python application
 #if 'df_Vagas' not in globals() and 'df_Applicants' not in the streamlit session():
 if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state or 'df_Prospects' not in st.session_state:
@@ -36,13 +43,16 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
 
     # #Load the JSON File into Python
     with open('prospects.json', 'r') as prospects_file:
-        data_Prospects = json.load(prospects_file)
+        data_Prospects = load_json(prospects_file) 
+        # data_Prospects = json.load(prospects_file)
 
     with open('applicants.json', 'r') as applicants_file:
-        data_Applicants = json.load(applicants_file)
+        data_Applicants = load_json(applicants_file) 
+        # data_Applicants = json.load(applicants_file)
 
     with open('vagas.json', 'r') as vagas_file:
-        data_Vagas = json.load(vagas_file)
+        data_Vagas = load_json(vagas_file) 
+        # data_Vagas = json.load(vagas_file)
 
 
     # # Convert the JSON so that each prospect candidate is represented as a separate row in the DataFrame
@@ -163,7 +173,7 @@ df_Vagas['informacoes_basicas__data_final'] = pd.to_datetime(df_Vagas['informaco
 # -----------------------------
 # Título e introdução - HEADER
 # -----------------------------
-st.set_page_config(page_title="Análises e Insights Estratégicos", layout="wide")
+# st.set_page_config(page_title="Análises e Insights Estratégicos", layout="wide")
 
 # # Header with logo and title
 # col1, col2 = st.columns([1, 6])

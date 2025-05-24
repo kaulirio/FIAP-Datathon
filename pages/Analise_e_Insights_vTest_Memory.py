@@ -53,10 +53,12 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
         data_Prospects = load_json(prospects_file)
 
     with open('applicants.json', 'r') as applicants_file:
-        data_Applicants = json.load(applicants_file)
+        data_Applicants = load_json(applicants_file)
+        # data_Applicants = json.load(applicants_file)
 
     with open('vagas.json', 'r') as vagas_file:
-        data_Vagas = json.load(vagas_file)
+        data_Vagas = load_json(vagas_file)
+        # data_Vagas = json.load(vagas_file)
 
 
     # # Convert the JSON so that each prospect candidate is represented as a separate row in the DataFrame
