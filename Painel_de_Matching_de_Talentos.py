@@ -15,6 +15,8 @@ import os
 
 #Initialise Streamlit
 st.set_page_config(page_title="Sistema de Recomendação de Talentos por Vaga", layout="wide")
+# Force garbage collection
+gc.collect()
 
 @st.cache_data(ttl=1800) # cache expires after 30 minutes 
 def load_json(json_file):    
