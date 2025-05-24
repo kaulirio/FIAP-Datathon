@@ -16,7 +16,7 @@ import os
 import plotly.express as px
 import matplotlib.pyplot as plt
 import locale
-locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')  # for macOS/Linux
+# locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')  # for macOS/Linux
 #locale.setlocale(locale.LC_TIME, 'Portuguese_Brazil.1252')  # for Windows
 
 
