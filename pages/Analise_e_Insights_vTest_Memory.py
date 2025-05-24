@@ -19,9 +19,9 @@ import psutil
 # locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')  # for macOS/Linux
 #locale.setlocale(locale.LC_TIME, 'Portuguese_Brazil.1252')  # for Windows
 
-@st.cache_data(ttl=3600)  # cache expires after 1 hour
+@st.cache_data(ttl=300)  # cache expires after 5 minutes
 def load_json(json_file):    
-    df = json.load()
+    df = json.load(json_file)
     return df
 
 @st.cache_resource
