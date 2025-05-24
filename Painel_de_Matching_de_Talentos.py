@@ -13,6 +13,14 @@ from sklearn.pipeline import Pipeline
 import gc
 import os
 
+#Initialise Streamlit
+st.set_page_config(page_title="Sistema de Recomendação de Talentos por Vaga", layout="wide")
+
+@st.cache_data(ttl=1800) # cache expires after 30 minutes 
+def load_json(json_file):    
+    df = json.load(json_file)
+    return df
+
 # Check whether the JSON files have been loaded into the python application
 #if 'df_Vagas' not in globals() and 'df_Applicants' not in the streamlit session():
 if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state:
@@ -32,10 +40,12 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
     #     data_Prospects = json.load(prospects_file)
 
     with open('applicants.json', 'r') as applicants_file:
-        data_Applicants = json.load(applicants_file)
+        data_Applicants = load_json(applicants_file) 
+        # data_Applicants = json.load(applicants_file)
 
     with open('vagas.json', 'r') as vagas_file:
-        data_Vagas = json.load(vagas_file)
+        data_Vagas = load_json(vagas_file) 
+        # data_Vagas = json.load(vagas_file)
 
 
     # # Convert the JSON so that each prospect candidate is represented as a separate row in the DataFrame
@@ -242,7 +252,7 @@ df_Applicants_original = df_Applicants #Used to create the list which populates 
 # -----------------------------
 # Título e introdução - HEADER
 # -----------------------------
-st.set_page_config(page_title="Sistema de Recomendação de Talentos por Vaga", layout="wide")
+#st.set_page_config(page_title="Sistema de Recomendação de Talentos por Vaga", layout="wide")
 
 # with col1:
 #     st.image("https://decision.pt/wp-content/uploads/2019/12/Logo_Decision.png", width=200)
