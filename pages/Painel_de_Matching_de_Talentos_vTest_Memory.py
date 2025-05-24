@@ -111,6 +111,9 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
     # Convert to DataFrame
     #df_Applicants = pd.DataFrame(records)
     st.session_state.df_Applicants = pd.DataFrame(records)
+    del data_Applicants
+    gc.collect()
+    
     print("**Uso de Memória RAM**")
     print(f"Total: {memory.total / 1e6:.2f} MB")
     print(f"Disponível: {memory.available / 1e6:.2f} MB")
@@ -142,6 +145,8 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
     # Convert to DataFrame
     #df_Vagas = pd.DataFrame(records)
     st.session_state.df_Vagas = pd.DataFrame(records)
+    del data_Vagas
+    gc.collect()    
     print("**Uso de Memória RAM**")
     print(f"Total: {memory.total / 1e6:.2f} MB")
     print(f"Disponível: {memory.available / 1e6:.2f} MB")
@@ -156,6 +161,7 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
     print(f"Disponível: {memory.available / 1e6:.2f} MB")
     print(f"Em uso: {memory.used / 1e6:.2f} MB")
     print(f"Percentual usado: {memory.percent}%")
+
     del data_Vagas
     del data_Applicants
     # Force garbage collection
