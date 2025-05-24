@@ -19,6 +19,15 @@ import psutil
 # locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')  # for macOS/Linux
 #locale.setlocale(locale.LC_TIME, 'Portuguese_Brazil.1252')  # for Windows
 
+@st.cache_data(ttl=3600)  # cache expires after 1 hour
+def load_json(json_file):    
+    df = json.load()
+    return df
+
+@st.cache_resource
+def load_model():
+    from sklearn.externals import joblib
+    return joblib.load("model.pkl")
 
 
 # Check whether the JSON files have been loaded into the python application
@@ -35,13 +44,10 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
     gdown.download(f'https://drive.google.com/uc?export=download&id={file_Applicants}', 'applicants.json', quiet=False)
     gdown.download(f'https://drive.google.com/uc?export=download&id={file_Vagas}', 'vagas.json', quiet=False)
 
+
     # #Load the JSON File into Python
-    with open('prospects.json', 'r') as prospects_file:
-        @st.cache_data(ttl=3600)  # cache expires after 1 hour
-        def load_data():
-            data_Prospects = json.load(prospects_file)
-            return data_Prospects
-        
+    with open('prospects.json', 'r') as prospects_file:        
+        data_Prospects = load_json(prospects_file)
 
     with open('applicants.json', 'r') as applicants_file:
         data_Applicants = json.load(applicants_file)
