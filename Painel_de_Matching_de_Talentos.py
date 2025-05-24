@@ -216,6 +216,8 @@ df_Applicants = df_Applicants.merge(
     how='left'
 )
 
+df_Applicants_original = df_Applicants #Used to create the list which populates the Applicants filters
+
 
 
 
@@ -336,47 +338,8 @@ def clean_text(text):
 
     return text
 
-df_Vagas['comparison_info'] = df_Vagas['perfil_vaga__competencia_tecnicas_e_comportamentais']
-#Clean special characters
-df_Vagas['comparison_info'] = df_Vagas['comparison_info'].apply(clean_text)
-
-# Example: compare first job in df_Vagas against all applicants
-job_description = df_Vagas['comparison_info'].iloc[0]
-
-# Combine the job description and all CVs into one list
-texts = [job_description] + df_Applicants['cv_pt'].fillna('').tolist()
-
-# Convert to TF-IDF vectors
-vectorizer = TfidfVectorizer(stop_words=None)
-tfidf_matrix = vectorizer.fit_transform(texts)
-
-# Compute cosine similarity between job and each CV
-similarities = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:]).flatten()
-
-# Add results to df_Applicants
-df_Applicants['match_score'] = similarities
-
-# Sort to get best-matching candidates
-top_matches = df_Applicants.sort_values(by='match_score', ascending=False)
-
-# Display top N
-# print(top_matches[['cv_pt', 'match_score']].head(5))
-
-# -----------------------------
-# Filtro por estado (local da vaga)
-# -----------------------------
-#list_local = sorted(df_Applicants['local'].dropna().unique())
-#candidato_local_selecionado = st.sidebar.selectbox("Filtrar por estado:", list_local)
-#opcoes = st.multiselect(list_local)
-
-# Filtrar vagas pelo estado selecionado
-#top_matches_filtrado = top_matches[top_matches['local'] == candidato_local_selecionado]
-
-
-
 #lista_vagas = sorted(df_filtrado['informacoes_basicas__titulo_vaga'].dropna().unique())
 # TITULO VAGA FILTER "Titulo da vaga" Filtro lateral
-#vaga_selecionada = st.sidebar.selectbox("Título da vaga:", lista_vagas)
 
 # Mostrar o título e o DataFrame da vaga_selecionada
 st.markdown(f"### Vaga: {vaga_selecionada}")
@@ -440,145 +403,155 @@ st.dataframe(df_vaga_display.reset_index(drop=True), use_container_width=True)
 # Exibição dos candidatos compatíveis
 # -----------------------------
 st.markdown(f"### Candidatos compatíveis com a vaga: {vaga_selecionada}")
+# if 'local' not in st.session_state:
+    # Executa apenas se 'local' possui valor diferente de nulo
+    # df_Applicants["match_score"] = 0
+    # top_matches = df_Applicants
+    # df_Applicants_original = df_Applicants
 
-top_matches_display = top_matches.rename(columns={
-    "id_applicant": "ID Candidato",
-    "infos_basicas__telefone_recado": "Telefone Recado",
-    "infos_basicas__telefone": "Telefone",
-    "infos_basicas__objetivo_profissional": "Objetivo Profissional",
-    "infos_basicas__data_criacao": "Data Criação",
-    "infos_basicas__inserido_por": "Inserido por",
-    "infos_basicas__email": "Email",
-    "infos_basicas__local": "Local",
-    "infos_basicas__sabendo_de_nos_por": "Soube da vaga por",
-    "infos_basicas__data_atualizacao": "Data Atualização",
-    "infos_basicas__codigo_profissional": "Código Profissional",
-    "infos_basicas__nome": "Nome",
-    "informacoes_pessoais__data_aceite": "Data Aceite",
-    "informacoes_pessoais__nome": "Nome (Pessoal)",
-    "informacoes_pessoais__fonte_indicacao": "Fonte de Indicação",
-    "informacoes_pessoais__email": "Email (Pessoal)",
-    "informacoes_pessoais__data_nascimento": "Data de Nascimento",
-    "informacoes_pessoais__telefone_celular": "Celular",
-    "informacoes_pessoais__sexo": "Sexo",
-    "informacoes_pessoais__estado_civil": "Estado Civil",
-    "informacoes_pessoais__pcd": "PCD",
-    "informacoes_pessoais__endereco": "Endereço",
-    "informacoes_profissionais__titulo_profissional": "Título Profissional",
-    "informacoes_profissionais__area_atuacao": "Área de Atuação",
-    "informacoes_profissionais__conhecimentos_tecnicos": "Conhecimentos Técnicos",
-    "informacoes_profissionais__remuneracao": "Remuneração",
-    "formacao_e_idiomas__nivel_academico": "Nível Acadêmico",
-    "formacao_e_idiomas__nivel_ingles": "Inglês",
-    "formacao_e_idiomas__nivel_espanhol": "Espanhol",
-    "formacao_e_idiomas__outro_idioma": "Outro Idioma",
-    "cv_pt": "Currículo",
-    "formacao_e_idiomas__cursos": "Cursos",
-    "formacao_e_idiomas__ano_conclusao": "Ano de Conclusão",
-    "informacoes_pessoais__download_cv": "Download CV",    
-    "match_score": "% Compatibilidade Vaga",    
-    "management_score": "Score Gestão"
-})
 
-# List of columns to keep (original column names)
-columns_to_keep = [
-    "ID Candidato",
-    "Nome",
-    "Telefone",
-    "Local",    
-    "Email",
-    "Objetivo Profissional",
-    "% Compatibilidade Vaga",
-    "Score Gestão",
-    "Data Criação",
-    "Data Atualização",    
-    "Data Aceite",
-    "Sexo",    
-    "PCD",
-    "Título Profissional",
-    "Área de Atuação",
-    "Nível Acadêmico",
-    "Inserido por",
-    "Inglês",
-    "Currículo"
-]
-
-# Select only those columns first
-top_matches_display = top_matches_display[columns_to_keep].copy()
-
-# Clone original DF to avoid overwriting
-top_matches_display = top_matches_display.copy()
-
-# 1. Format "% Compatibilidade Vaga" as percentage (e.g., 0.82 → "82.00%")
-if "% Compatibilidade Vaga" in top_matches_display.columns:
-    top_matches_display["% Compatibilidade Vaga"] = top_matches_display["% Compatibilidade Vaga"].apply(
-        lambda x: f"{x:.2%}" if pd.notnull(x) else ""
-    )
-
-# 2. Format "Data Criação" and "Data Atualização" to "dd.MMM.yyyy"
-for col in ["Data Criação", "Data Atualização", "Data Aceite"]:
-    if col in top_matches_display.columns:
-        top_matches_display[col] = pd.to_datetime(top_matches_display[col], errors="coerce")
-        top_matches_display[col] = top_matches_display[col].dt.strftime('%d.%b.%Y')
-
-top_matches_display_aux = top_matches_display
-
-# LOCAL CANDIDATO FILTER "Titulo da vaga" Filtro lateral
+# LOCAL CANDIDATO FILTER "Titulo da vaga" Filtro acima do gráfico
 # Gerar lista com os locais/estados dos candidatos        
-lista_local_candidatos = sorted(top_matches['infos_basicas__local'].dropna().unique())
-lista_nivel_academico = sorted(top_matches['formacao_e_idiomas__nivel_academico'].dropna().unique())
-lista_score_gestao = sorted(top_matches['management_score'].dropna().unique())
+lista_local_candidatos = sorted(df_Applicants_original['infos_basicas__local'].dropna().unique())
+lista_nivel_academico = sorted(df_Applicants_original['formacao_e_idiomas__nivel_academico'].dropna().unique())
+lista_score_gestao = sorted(df_Applicants_original['management_score'].dropna().unique())
 
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    local = st.selectbox("Local candidato:", lista_local_candidatos)
+    # local = st.selectbox("Local candidato:", lista_local_candidatos)
+    st.session_state.local = st.selectbox("Local candidato:", lista_local_candidatos)
 with col2:
     nivel_academico = st.selectbox("Nível Acadênico:", lista_nivel_academico)
 with col3:
-    score_gestao = st.selectbox("Score Gestão (0 a 3):", lista_score_gestao)    
-
-top_matches_display = top_matches_display[top_matches_display['Local'] == local]
-top_matches_display = top_matches_display[top_matches_display['Nível Acadêmico'] == nivel_academico]
-top_matches_display = top_matches_display[top_matches_display['Score Gestão'] == score_gestao]
-
-# Remove 'local' filter if selected
-if local == "" and nivel_academico == "" and score_gestao == 0:
-    top_matches_display = top_matches_display_aux
-# else:
-#     top_matches_display = top_matches_display_aux
-
-st.dataframe(top_matches_display.reset_index(drop=True), use_container_width=True)
-# st.dataframe(df_Applicants.reset_index(drop=True), use_container_width=True)
+    score_gestao = st.selectbox("Score Gestão (0 a 3):", lista_score_gestao)   
 
 
+if st.session_state.local != "":
+    # Executa apenas se 'local' foi declarado e tem valor diferente de vazio    
+    df_Vagas['comparison_info'] = df_Vagas['perfil_vaga__competencia_tecnicas_e_comportamentais']
+    #Clean special characters
+    df_Vagas['comparison_info'] = df_Vagas['comparison_info'].apply(clean_text)
 
-# st.set_page_config(
-#     page_title = 'PAINEL DE AÇÕES DA B3',
-#     layout = 'wide'
-# )
+    # Example: compare first job in df_Vagas against all applicants
+    job_description = df_Vagas['comparison_info'].iloc[0]
+    df_Applicants_original = df_Applicants
+    df_Applicants = df_Applicants[df_Applicants['infos_basicas__local'] == st.session_state.local]
 
-# st.header("**PAINEL DE PREÇO DE FECHAMENTO E DIVIDENDOS DE AÇÕES DA B3**")
+    # Combine the job description and all CVs into one list
+    texts = [job_description] + df_Applicants['cv_pt'].fillna('').tolist()
 
-# st.markdown("**PAINEL DE PREÇO DE FECHAMENTO E DIVIDENDfffOS DE AÇÕES DA B3**")
+    # Convert to TF-IDF vectors
+    vectorizer = TfidfVectorizer(stop_words=None)
+    tfidf_matrix = vectorizer.fit_transform(texts)
 
+    # Compute cosine similarity between job and each CV
+    similarities = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:]).flatten()
 
-# ticker = st.text_input('Digite o ticket da ação', 'BBAS3')
-# empresa = yf.Ticker(f"{ticker}.SA")
+    # Add results to df_Applicants
+    df_Applicants['match_score'] = similarities
 
-# tickerDF = empresa.history( period  = "1d",
-#                             start   = "2019-01-01",
-#                             end     = "2025-01-20"
-# )
+    # Sort to get best-matching candidates
+    top_matches = df_Applicants.sort_values(by='match_score', ascending=False)
 
-# col1, col2, col3 = st.columns([1, 1, 1])
+    top_matches_display = top_matches.rename(columns={
+        "id_applicant": "ID Candidato",
+        "infos_basicas__telefone_recado": "Telefone Recado",
+        "infos_basicas__telefone": "Telefone",
+        "infos_basicas__objetivo_profissional": "Objetivo Profissional",
+        "infos_basicas__data_criacao": "Data Criação",
+        "infos_basicas__inserido_por": "Inserido por",
+        "infos_basicas__email": "Email",
+        "infos_basicas__local": "Local",
+        "infos_basicas__sabendo_de_nos_por": "Soube da vaga por",
+        "infos_basicas__data_atualizacao": "Data Atualização",
+        "infos_basicas__codigo_profissional": "Código Profissional",
+        "infos_basicas__nome": "Nome",
+        "informacoes_pessoais__data_aceite": "Data Aceite",
+        "informacoes_pessoais__nome": "Nome (Pessoal)",
+        "informacoes_pessoais__fonte_indicacao": "Fonte de Indicação",
+        "informacoes_pessoais__email": "Email (Pessoal)",
+        "informacoes_pessoais__data_nascimento": "Data de Nascimento",
+        "informacoes_pessoais__telefone_celular": "Celular",
+        "informacoes_pessoais__sexo": "Sexo",
+        "informacoes_pessoais__estado_civil": "Estado Civil",
+        "informacoes_pessoais__pcd": "PCD",
+        "informacoes_pessoais__endereco": "Endereço",
+        "informacoes_profissionais__titulo_profissional": "Título Profissional",
+        "informacoes_profissionais__area_atuacao": "Área de Atuação",
+        "informacoes_profissionais__conhecimentos_tecnicos": "Conhecimentos Técnicos",
+        "informacoes_profissionais__remuneracao": "Remuneração",
+        "formacao_e_idiomas__nivel_academico": "Nível Acadêmico",
+        "formacao_e_idiomas__nivel_ingles": "Inglês",
+        "formacao_e_idiomas__nivel_espanhol": "Espanhol",
+        "formacao_e_idiomas__outro_idioma": "Outro Idioma",
+        "cv_pt": "Currículo",
+        "formacao_e_idiomas__cursos": "Cursos",
+        "formacao_e_idiomas__ano_conclusao": "Ano de Conclusão",
+        "informacoes_pessoais__download_cv": "Download CV",    
+        "match_score": "% Compatibilidade Vaga",    
+        "management_score": "Score Gestão"
+    })
 
-# with col1:
-#     st.write(f"**Empresa:**  {empresa.info['longName']}")
-# with col2:
-#     st.write(f"**Mercado:** R$ {empresa.info['industry']}")
-# with col3:
-#     st.write(f"**Preço Atual:** R$ {empresa.info['currentPrice']}")
+    # List of columns to keep (original column names)
+    columns_to_keep = [
+        "ID Candidato",
+        "Nome",
+        "Telefone",
+        "Local",    
+        "Email",
+        "Objetivo Profissional",
+        "% Compatibilidade Vaga",
+        "Score Gestão",
+        "Data Criação",
+        "Data Atualização",    
+        "Data Aceite",
+        "Sexo",    
+        "PCD",
+        "Título Profissional",
+        "Área de Atuação",
+        "Nível Acadêmico",
+        "Inserido por",
+        "Inglês",
+        "Currículo"
+    ]
 
-# st.line_chart(tickerDF.Close)
-# st.bar_chart(tickerDF.Dividends)
+    # Select only those columns first
+    top_matches_display = top_matches_display[columns_to_keep].copy()
+
+    # Clone original DF to avoid overwriting
+    top_matches_display = top_matches_display.copy()
+
+    # 1. Format "% Compatibilidade Vaga" as percentage (e.g., 0.82 → "82.00%")
+    if "% Compatibilidade Vaga" in top_matches_display.columns:
+        top_matches_display["% Compatibilidade Vaga"] = top_matches_display["% Compatibilidade Vaga"].apply(
+            lambda x: f"{x:.2%}" if pd.notnull(x) else ""
+        )
+
+    # 2. Format "Data Criação" and "Data Atualização" to "dd.MMM.yyyy"
+    for col in ["Data Criação", "Data Atualização", "Data Aceite"]:
+        if col in top_matches_display.columns:
+            top_matches_display[col] = pd.to_datetime(top_matches_display[col], errors="coerce")
+            top_matches_display[col] = top_matches_display[col].dt.strftime('%d.%b.%Y')
+
+    top_matches_display_aux = top_matches_display
+
+    
+
+    # top_matches_display = top_matches_display[top_matches_display['Local'] == local]
+    top_matches_display = top_matches_display[top_matches_display['Nível Acadêmico'] == nivel_academico]
+    if score_gestao > 0:
+        top_matches_display = top_matches_display[top_matches_display['Score Gestão'] == score_gestao]
+
+    # Remove 'local' filter if selected
+    if st.session_state.local == "" and nivel_academico == "" and score_gestao == 0:
+        top_matches_display = top_matches_display_aux
+    # else:
+    #     top_matches_display = top_matches_display_aux
+
+    local = st.session_state.local
+
+    
+    #Show the dataframe using streamlit object
+    st.dataframe(top_matches_display.reset_index(drop=True), use_container_width=True)
+
