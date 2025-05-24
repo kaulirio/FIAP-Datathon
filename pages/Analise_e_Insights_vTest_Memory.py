@@ -19,6 +19,9 @@ import psutil
 # locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')  # for macOS/Linux
 #locale.setlocale(locale.LC_TIME, 'Portuguese_Brazil.1252')  # for Windows
 
+
+st.set_page_config(page_title="Análises e Insights Estratégicos", layout="wide")
+
 @st.cache_data(ttl=300)  # cache expires after 5 minutes
 def load_json(json_file):    
     df = json.load(json_file)
@@ -180,7 +183,7 @@ df_Vagas['informacoes_basicas__data_final'] = pd.to_datetime(df_Vagas['informaco
 # -----------------------------
 # Título e introdução - HEADER
 # -----------------------------
-st.set_page_config(page_title="Análises e Insights Estratégicos", layout="wide")
+#st.set_page_config(page_title="Análises e Insights Estratégicos", layout="wide")
 
 # # Header with logo and title
 # col1, col2 = st.columns([1, 6])
