@@ -22,6 +22,9 @@ import locale
 
 st.set_page_config(page_title="Análises e Insights Estratégicos", layout="wide")
 
+# Force garbage collection
+gc.collect()
+
 @st.cache_data(ttl=1800) # cache expires after 30 minutes 
 def load_json(json_file):    
     df = json.load(json_file)
