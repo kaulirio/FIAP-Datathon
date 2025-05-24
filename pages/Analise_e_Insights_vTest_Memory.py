@@ -74,8 +74,8 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
     # Convert to DataFrame
     # df_Prospects = pd.DataFrame(records)
     st.session_state.df_Prospects = pd.DataFrame(records)
-    del data_Prospects
-    gc.collect()    
+    # del data_Prospects
+    # gc.collect()    
 
 
     # -----------------------
@@ -102,8 +102,8 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
     # Convert to DataFrame
     #df_Applicants = pd.DataFrame(records)
     st.session_state.df_Applicants = pd.DataFrame(records)
-    del data_Applicants
-    gc.collect()    
+    # del data_Applicants
+    # gc.collect()    
 
     #test
 
@@ -130,8 +130,8 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
     # Convert to DataFrame
     #df_Vagas = pd.DataFrame(records)
     st.session_state.df_Vagas = pd.DataFrame(records)
-    del data_Vagas
-    gc.collect()    
+    # del data_Vagas
+    # gc.collect()    
 
 
     #Release memory used
