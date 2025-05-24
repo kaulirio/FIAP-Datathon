@@ -15,6 +15,7 @@ import os
 import plotly.express as px
 import matplotlib.pyplot as plt
 import locale
+import psutil
 # locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')  # for macOS/Linux
 #locale.setlocale(locale.LC_TIME, 'Portuguese_Brazil.1252')  # for Windows
 
@@ -174,6 +175,15 @@ st.set_page_config(page_title="Análises e Insights Estratégicos", layout="wide
 # with col2:
 #     st.markdown("## Sistema de Recomendação de Talentos")
 #     st.markdown("### Selecione uma vaga na aba filtros para visualizar os candidatos mais compatíveis")
+
+
+memory = psutil.virtual_memory()
+
+st.write("**Uso de Memória RAM**")
+st.write(f"Total: {memory.total / 1e6:.2f} MB")
+st.write(f"Disponível: {memory.available / 1e6:.2f} MB")
+st.write(f"Em uso: {memory.used / 1e6:.2f} MB")
+st.write(f"Percentual usado: {memory.percent}%")
 
 st.markdown("""
           <style>
