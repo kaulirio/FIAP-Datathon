@@ -37,7 +37,11 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
 
     # #Load the JSON File into Python
     with open('prospects.json', 'r') as prospects_file:
-        data_Prospects = json.load(prospects_file)
+        @st.cache_data(ttl=3600)  # cache expires after 1 hour
+        def load_data():
+            data_Prospects = json.load(prospects_file)
+            return data_Prospects
+        
 
     with open('applicants.json', 'r') as applicants_file:
         data_Applicants = json.load(applicants_file)
