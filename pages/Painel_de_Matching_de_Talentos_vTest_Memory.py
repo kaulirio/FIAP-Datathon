@@ -14,6 +14,15 @@ import gc
 import os
 import psutil
 
+
+memory = psutil.virtual_memory()
+
+print("**Uso de Memória RAM**")
+print(f"Total: {memory.total / 1e6:.2f} MB")
+print(f"Disponível: {memory.available / 1e6:.2f} MB")
+print(f"Em uso: {memory.used / 1e6:.2f} MB")
+print(f"Percentual usado: {memory.percent}%")
+
 # Check whether the JSON files have been loaded into the python application
 #if 'df_Vagas' not in globals() and 'df_Applicants' not in the streamlit session():
 if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state:
@@ -34,9 +43,19 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
 
     with open('applicants.json', 'r') as applicants_file:
         data_Applicants = json.load(applicants_file)
+        print("**Uso de Memória RAM**")
+        print(f"Total: {memory.total / 1e6:.2f} MB")
+        print(f"Disponível: {memory.available / 1e6:.2f} MB")
+        print(f"Em uso: {memory.used / 1e6:.2f} MB")
+        print(f"Percentual usado: {memory.percent}%")   
 
     with open('vagas.json', 'r') as vagas_file:
         data_Vagas = json.load(vagas_file)
+        print("**Uso de Memória RAM**")
+        print(f"Total: {memory.total / 1e6:.2f} MB")
+        print(f"Disponível: {memory.available / 1e6:.2f} MB")
+        print(f"Em uso: {memory.used / 1e6:.2f} MB")
+        print(f"Percentual usado: {memory.percent}%")
 
 
     # # Convert the JSON so that each prospect candidate is represented as a separate row in the DataFrame
@@ -92,6 +111,11 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
     # Convert to DataFrame
     #df_Applicants = pd.DataFrame(records)
     st.session_state.df_Applicants = pd.DataFrame(records)
+    print("**Uso de Memória RAM**")
+    print(f"Total: {memory.total / 1e6:.2f} MB")
+    print(f"Disponível: {memory.available / 1e6:.2f} MB")
+    print(f"Em uso: {memory.used / 1e6:.2f} MB")
+    print(f"Percentual usado: {memory.percent}%")
 
     #test
 
@@ -118,16 +142,31 @@ if 'df_Vagas' not in st.session_state or 'df_Applicants' not in st.session_state
     # Convert to DataFrame
     #df_Vagas = pd.DataFrame(records)
     st.session_state.df_Vagas = pd.DataFrame(records)
+    print("**Uso de Memória RAM**")
+    print(f"Total: {memory.total / 1e6:.2f} MB")
+    print(f"Disponível: {memory.available / 1e6:.2f} MB")
+    print(f"Em uso: {memory.used / 1e6:.2f} MB")
+    print(f"Percentual usado: {memory.percent}%")
 
 
     #Release memory used
     # Clear variables
+    print("**Uso de Memória RAM - Release memory **")
+    print(f"Total: {memory.total / 1e6:.2f} MB")
+    print(f"Disponível: {memory.available / 1e6:.2f} MB")
+    print(f"Em uso: {memory.used / 1e6:.2f} MB")
+    print(f"Percentual usado: {memory.percent}%")
     del data_Vagas
     del data_Applicants
     # Force garbage collection
     gc.collect()
 
     
+print("**Uso de Memória RAM - st.session_state dfs Vagas & Applicants**")
+print(f"Total: {memory.total / 1e6:.2f} MB")
+print(f"Disponível: {memory.available / 1e6:.2f} MB")
+print(f"Em uso: {memory.used / 1e6:.2f} MB")
+print(f"Percentual usado: {memory.percent}%")    
 df_Vagas = st.session_state.df_Vagas
 df_Applicants = st.session_state.df_Applicants
 
@@ -146,6 +185,12 @@ df_Vagas['informacoes_basicas__data_requicisao'] = pd.to_datetime(df_Vagas['info
 df_Vagas['informacoes_basicas__data_inicial'] = pd.to_datetime(df_Vagas['informacoes_basicas__data_inicial'], format='%d-%m-%Y', errors='coerce' )
 df_Vagas['informacoes_basicas__data_final'] = pd.to_datetime(df_Vagas['informacoes_basicas__data_final'], format='%d-%m-%Y', errors='coerce' )
 
+
+print("**Uso de Memória RAM - Before Machine Learning**")
+print(f"Total: {memory.total / 1e6:.2f} MB")
+print(f"Disponível: {memory.available / 1e6:.2f} MB")
+print(f"Em uso: {memory.used / 1e6:.2f} MB")
+print(f"Percentual usado: {memory.percent}%")
 
 #Measure management skills from the applicant database using the "cv_pt" column — 
 #applying supervised machine learning with keyword-based scoring via the Scikit-learn (sklearn) library.
@@ -260,6 +305,9 @@ st.write(f"Total: {memory.total / 1e6:.2f} MB")
 st.write(f"Disponível: {memory.available / 1e6:.2f} MB")
 st.write(f"Em uso: {memory.used / 1e6:.2f} MB")
 st.write(f"Percentual usado: {memory.percent}%")
+
+
+
 
 st.markdown("""
           <style>
