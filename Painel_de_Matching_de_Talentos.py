@@ -244,9 +244,6 @@ df_Applicants_original = df_Applicants #Used to create the list which populates 
 # -----------------------------
 st.set_page_config(page_title="Sistema de Recomendação de Talentos por Vaga", layout="wide")
 
-# # Header with logo and title
-# col1, col2 = st.columns([1, 6])
-
 # with col1:
 #     st.image("https://decision.pt/wp-content/uploads/2019/12/Logo_Decision.png", width=200)
 
